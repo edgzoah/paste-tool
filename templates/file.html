@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <a href="/">main</a>
+    <div class="row" style="display: flex; justify-content: center; align-items: center; margin-top: 10vh; border: solid rgb(160, 160, 160); margin-left: 10%; margin-right: 10%; padding: 1rem;">
+    <div class="col">
+        <span style="white-space: pre-line;">    
+    {{resp[0]}}
+</span>
+</div>
+</div>
+<div class="row">
+    <div class="col justify-content-center" style="text-align: center; padding-top: 1rem">
+        <a href="/raw{{request.path}}">raw text</a>
+    </div>
+</div>
+</body>
+</html>
