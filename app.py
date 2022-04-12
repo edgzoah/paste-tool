@@ -1,3 +1,4 @@
+from cgitb import text
 from flask import Flask, render_template, make_response, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -5,7 +6,7 @@ import os.path
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'F3HUIF23H8923F9H8389FHXKLN'
-app.config['UPLOAD_FOLDER'] = 'G:\\pierdole\\templates'
+app.config['UPLOAD_FOLDER'] = '/home/adam/paste-tool/templates'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:''@localhost/pastebin'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -36,15 +37,23 @@ def index():
     u = texts(completeName, file_name)
     db.session.add(u)
     db.session.commit()
-    return redirect('/z' + file_name)
+    return redirect('/file/' + file_name)
 
   return render_template('index.html')
 
-@app.route('/z<file>')
+@app.route('/file/<file>')
+def file(file):
+  try:
+    q = db.session.query(texts.location).filter(texts.url == file).first()
+    if q == None: return redirect('/')
+    resp = make_response(render_template(file + '.txt'))
+    return render_template('file.html', resp=[resp.get_data().decode('UTF-8')])
+  except: return redirect('/')
+
+@app.route('/raw/file/<file>')
 def getfile(file):
   try:
     q = db.session.query(texts.location).filter(texts.url == file).first()
-    print(q)
     if q == None: return redirect('/')
     resp = make_response(render_template(file + '.txt'))
     resp.mimetype = 'text/plain'
